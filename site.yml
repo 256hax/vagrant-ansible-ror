@@ -1,0 +1,62 @@
+---
+- name: Setup Ruby
+  hosts: vagrantservers
+  user: vagrant
+  vars:
+    rbenv_repo:      "https://github.com/rbenv/rbenv.git"
+    ruby_build_repo: "https://github.com/rbenv/ruby-build.git"
+    ruby_version: "2.7.0"
+  tasks:
+    - name: Install packages for Ruby
+      become: yes
+      dnf:
+        name:
+          - wget
+          - git-all
+          - openssl-devel
+          - readline-devel
+          - sqlite
+          - sqlite-devel
+          - gcc
+          - gcc-c++
+          - make
+
+    - name: Git clone rbenv
+      git:
+        repo: "{{ rbenv_repo }}"
+        dest: "{{ rbenv_root }}"
+
+    - name: Git clone ruby-build
+      git:
+        repo: "{{ ruby_build_repo }}"
+        dest: "{{ ruby_build_root }}"
+
+    - name: Copy .bashrc
+      copy:
+        src: files/.bashrc
+        dest: "{{ bashrc }}"
+
+    - name: Source .bashrc
+      shell: ". {{ bashrc }}"
+      changed_when: False
+
+    - name: Check and register vars installed Ruby version
+      shell: "rbenv versions"
+      register: rbenv_versions
+      changed_when: False
+
+    - name: Install Ruby {{ ruby_version }}
+      shell: "rbenv install {{ ruby_version }}"
+      when: rbenv_versions.stdout.find( "{{ ruby_version }}" ) == -1
+
+    - name: Set Ruby version {{ ruby_version }}
+      shell: "rbenv global {{ ruby_version }}"
+      changed_when: False
+
+    - name: Rehash rbenv
+      shell: "rbenv rehash {{ ruby_version }}"
+      changed_when: False
+
+    - name: Install bundler
+      gem:
+        name: bundler

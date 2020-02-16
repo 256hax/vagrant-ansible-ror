@@ -1,0 +1,8 @@
+# Common
+.git
+
+# Vagrant
+.vagrant
+
+# Mac
+.DS_Store
