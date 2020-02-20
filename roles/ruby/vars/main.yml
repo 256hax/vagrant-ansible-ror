@@ -1,0 +1,4 @@
+---
+rbenv_repo:      "https://github.com/rbenv/rbenv.git"
+ruby_build_repo: "https://github.com/rbenv/ruby-build.git"
+ruby_version: "2.7.0"

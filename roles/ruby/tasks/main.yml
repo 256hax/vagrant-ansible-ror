@@ -1,0 +1,47 @@
+---
+- name: Install packages for Ruby
+  become: yes
+  dnf:
+    name:
+      - wget
+      - git-all
+      - openssl-devel
+      - readline-devel
+      - sqlite
+      - sqlite-devel
+      - gcc
+      - gcc-c++
+      - make
+
+- name: Git clone rbenv
+  git:
+    repo: "{{ rbenv_repo }}"
+    dest: "{{ rbenv_root }}"
+
+- name: Git clone ruby-build
+  git:
+    repo: "{{ ruby_build_repo }}"
+    dest: "{{ ruby_build_root }}"
+
+# Run following tasks at common
+#
+# - name: Copy .bashrc
+#   copy:
+#     src: files/.bashrc
+#     dest: "{{ bashrc }}"
+#
+# - name: Source .bashrc
+#   shell: ". {{ bashrc }}"
+
+- name: Install Ruby {{ ruby_version }}
+  shell: "rbenv install {{ ruby_version }}"
+
+- name: Set Ruby version {{ ruby_version }}
+  shell: "rbenv global {{ ruby_version }}"
+
+- name: Rehash rbenv
+  shell: "rbenv rehash {{ ruby_version }}"
+
+- name: Install bundler
+  gem:
+    name: bundler

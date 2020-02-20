@@ -1,0 +1,14 @@
+---
+# - name: Upgrade all packages
+#   become: yes
+#   dnf:
+#     name: "*"
+#     state: latest
+
+- name: Copy .bashrc
+  copy:
+    src: "../files/.bashrc"
+    dest: "{{ bashrc }}"
+
+- name: Source .bashrc
+  shell: ". {{ bashrc }}"
