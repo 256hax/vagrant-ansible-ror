@@ -1,4 +1,6 @@
 ---
 rbenv_repo:      "https://github.com/rbenv/rbenv.git"
+rbenv_root:      "{{ vagrant_home }}/.rbenv"
 ruby_build_repo: "https://github.com/rbenv/ruby-build.git"
-ruby_version: "2.7.0"
+ruby_build_root: "{{ rbenv_root }}/plugins/ruby-build"
+ruby_version:    "2.7.0"

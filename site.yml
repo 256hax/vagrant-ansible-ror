@@ -4,9 +4,29 @@
   user: vagrant
   roles:
     - common
+  tags:
+    - common
 
 - name: Setup Ruby
   hosts: vagrantservers
   user: vagrant
   roles:
     - ruby
+  tags:
+    - ruby
+
+# - name: Setup PostgreSQL
+#   hosts: vagrantservers
+#   user: vagrant
+#   roles:
+#     - postgresql
+#   tags:
+#     - postgresql
+
+- name: Setup Rails
+  hosts: vagrantservers
+  user: vagrant
+  roles:
+    - rails
+  tags:
+    - rails
