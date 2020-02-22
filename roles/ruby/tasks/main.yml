@@ -23,21 +23,22 @@
     repo: "{{ ruby_build_repo }}"
     dest: "{{ ruby_build_root }}"
 
-# Run following tasks at common
-#
-# - name: Copy .bashrc
-#   copy:
-#     src: files/.bashrc
-#     dest: "{{ bashrc }}"
-#
-# - name: Source .bashrc
-#   shell: ". {{ bashrc }}"
+# Run following tasks at common tasks
+# (1) Copy .bashrc
+# (2) Source .bashrc
+
+- name: Check installed ruby version
+  shell: "rbenv versions"
+  register: "installed_ruby_version"
+  ignore_errors: yes
 
 - name: Install Ruby {{ ruby_version }}
   shell: "rbenv install {{ ruby_version }}"
+  when: installed_ruby_version.stdout.find( "{{ ruby_version }}" ) == -1
 
 - name: Set Ruby version {{ ruby_version }}
   shell: "rbenv global {{ ruby_version }}"
+  when: installed_ruby_version.stdout.find( "{{ ruby_version }}" ) == -1
 
 - name: Rehash rbenv
   shell: "rbenv rehash {{ ruby_version }}"

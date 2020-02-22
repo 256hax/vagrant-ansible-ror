@@ -1,4 +1,5 @@
 ---
+#--- Set up ---#
 - name: Install Yarn repo
   become: yes
   get_url:
@@ -17,3 +18,23 @@
   dnf:
     name:
       - nodejs
+
+#--- Rails ---#
+- name: Create sample Rails directory
+  file:
+    path: "{{ sample_rails_path }}"
+    state: directory
+
+- name: Copy Gemfile
+  copy:
+    src: "../files/Gemfile"
+    dest: "{{ sample_rails_path }}"
+
+- name: Set bundle installation path
+  shell: "bundle config set path 'vendor/bundle'"
+
+- name: Install gems
+  bundler:
+      state: present
+  args:
+    chdir: "{{ sample_rails_path }}"

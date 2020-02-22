@@ -8,10 +8,10 @@
 - name: Copy .bashrc
   copy:
     src: "../files/.bashrc"
-    dest: "{{ bashrc }}"
+    dest: "{{ bashrc_path }}"
 
 - name: Source .bashrc
-  shell: ". {{ bashrc }}"
+  shell: ". {{ bashrc_path }}"
 
 - name: Install fish shell repo
   become: yes
@@ -23,3 +23,8 @@
   become: yes
   dnf:
     name: fish
+
+# Document: https://docs.ansible.com/ansible/latest/modules/expect_module.html
+- name: Install pexpect for prompts
+  become: yes
+  shell: "pip3 install pexpect"
