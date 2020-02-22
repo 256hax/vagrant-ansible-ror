@@ -12,3 +12,14 @@
 
 - name: Source .bashrc
   shell: ". {{ bashrc }}"
+
+- name: Install fish shell repo
+  become: yes
+  get_url:
+    url: "{{ fish_repo }}"
+    dest: "{{ fish_dest }}"
+
+- name: Install fish shell
+  become: yes
+  dnf:
+    name: fish
