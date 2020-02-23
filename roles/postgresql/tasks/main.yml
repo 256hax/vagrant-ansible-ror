@@ -1,0 +1,53 @@
+---
+#--- Installation PostgreSQL ---#
+# Installation Steps: https://www.postgresql.org/download/linux/redhat/
+- name: Install PostgreSQL repo
+  become: yes
+  dnf:
+    name: "{{ postgresql_repo }}"
+
+- name: Disable the built-in PostgreSQL module
+  become: yes
+  shell: "dnf -qy module disable postgresql"
+
+- name: Install the client packages
+  become: yes
+  dnf:
+    name: "postgresql{{ postgresql_version }}"
+
+- name: Optionally install the server packages
+  become: yes
+  dnf:
+    name: "postgresql{{ postgresql_version }}-server"
+
+- name: Optionally initialize the database and enable automatic start
+  become: yes
+  shell: "{{ item }}"
+  loop:
+    - /usr/pgsql-{{ postgresql_version }}/bin/postgresql-{{ postgresql_version }}-setup initdb
+    - systemctl enable postgresql-{{ postgresql_version }}
+    - systemctl start postgresql-{{ postgresql_version }}
+  # For "Data directory is not empty!" error.
+  ignore_errors: yes
+
+#--- Dependency Packages ---#
+- name: Install python3-psycopg2 for PostgreSQL database adapter
+  become: yes
+  dnf:
+    name: python3-psycopg2
+
+#--- Setting ---#
+- name: Activate postgres user (add password)
+  become: yes
+  user:
+    name: "postgres"
+    password: "{{ postgresql_password }}"
+
+- name: Create PostgreSQL User({{ postgresql_username }})
+  # It need "become: yes" for "become: postgres".
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    name: "{{ postgresql_username }}"
+    password: "{{ postgresql_password }}"
+    login_user: postgres

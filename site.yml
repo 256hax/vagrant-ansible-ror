@@ -15,13 +15,13 @@
   tags:
     - ruby
 
-# - name: Setup PostgreSQL
-#   hosts: vagrantservers
-#   user: vagrant
-#   roles:
-#     - postgresql
-#   tags:
-#     - postgresql
+- name: Setup PostgreSQL
+  hosts: vagrantservers
+  user: vagrant
+  roles:
+    - postgresql
+  tags:
+    - postgresql
 
 - name: Setup Rails
   hosts: vagrantservers

@@ -24,7 +24,7 @@
   dnf:
     name: fish
 
-# For error "Failed to set locale, defaulting to C"
+# For "Failed to set locale, defaulting to C" error.
 - name: export LC_ALL=C
   shell: "export LC_ALL=C"
 
