@@ -20,6 +20,9 @@
       - nodejs
 
 #--- Rails ---#
+- name: Set bundle installation path
+  shell: "bundle config set path 'vendor/bundle'"
+
 - name: Create sample Rails directory
   file:
     path: "{{ sample_rails_path }}"
@@ -30,11 +33,18 @@
     src: "../files/Gemfile"
     dest: "{{ sample_rails_path }}"
 
-- name: Set bundle installation path
-  shell: "bundle config set path 'vendor/bundle'"
-
-- name: Install gems
+- name: Install RubyGems
   bundler:
       state: present
+  args:
+    chdir: "{{ sample_rails_path }}"
+
+- name: Rails new
+  expect:
+    command: "bundle exec rails new ."
+    responses:
+      (.*)Overwrite (.*)Gemfile(.*): "Y"
+    # timeout 1200 sec = 20 min
+    timeout: 1200
   args:
     chdir: "{{ sample_rails_path }}"
