@@ -55,6 +55,18 @@ https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html
 ### Playbook Debugger
 https://docs.ansible.com/ansible/latest/user_guide/playbooks_debugger.html
 
+## Coding Guideline
+### command vs shell
+Conclusion
+- Command through the shell (using <, >, |, etc) => shell
+- Else (highly recommend) => command
+
+[command – Execute commands on targets](https://docs.ansible.com/ansible/latest/modules/command_module.html#notes)
+
+```
+If you want to run a command through the shell (say you are using <, >, |, etc), you actually want the shell module instead. Parsing shell metacharacters can lead to unexpected commands being executed if quoting is not done correctly so it is more secure to use the command module when possible.
+```
+
 ## Error
 ### SSH Error
 If you got following SSH error,
