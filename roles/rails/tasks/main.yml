@@ -1,5 +1,5 @@
 ---
-#--- Set up ---#
+#--- Setup ---#
 - name: Install Yarn repo
   become: yes
   get_url:
@@ -19,25 +19,25 @@
     name:
       - nodejs
 
-#--- Rails ---#
 - name: Set bundle installation path
   shell: "bundle config set path 'vendor/bundle'"
 
+#--- Rails with SQLite ---#
 - name: Create sample Rails directory
   file:
-    path: "{{ sample_rails_path }}"
+    path: "{{ sample_rails_w_sqlite_path }}"
     state: directory
 
 - name: Copy Gemfile
   copy:
     src: "../files/Gemfile"
-    dest: "{{ sample_rails_path }}"
+    dest: "{{ sample_rails_w_sqlite_path }}"
 
 - name: Install RubyGems
   bundler:
       state: present
   args:
-    chdir: "{{ sample_rails_path }}"
+    chdir: "{{ sample_rails_w_sqlite_path }}"
 
 - name: Rails new
   expect:
@@ -47,4 +47,16 @@
     # timeout 1200 sec = 20 min
     timeout: 1200
   args:
-    chdir: "{{ sample_rails_path }}"
+    chdir: "{{ sample_rails_w_sqlite_path }}"
+
+- name: Rails scaffold
+  shell: "bundle exec rails g scaffold user name:string age:integer"
+  args:
+    chdir: "{{ sample_rails_w_sqlite_path }}"
+  # ignore_errors: yes
+
+- name: Rails DB migrate
+  shell: "bundle exec rails db:migrate"
+  args:
+    chdir: "{{ sample_rails_w_sqlite_path }}"
+  # ignore_errors: yes
