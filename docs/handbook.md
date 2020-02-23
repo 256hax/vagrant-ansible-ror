@@ -17,23 +17,28 @@ $ vagrant reload
 ```
 
 ## Ansible Playbook Command
-### Check syntax
+### Check syntax(--syntax-check)
 ```
 $ ansible-playbook -i hosts --syntax-check site.yml
 ```
 
 ### Dry run
-#### Standard
+#### Standard(--check)
 ```
 $ ansible-playbook -i hosts site.yml --check
 ```
 
-#### With tags
+#### With tags(--tags)
 ```
 $ ansible-playbook -i hosts site.yml --check --tags "common"
 ```
 
-#### With debug (Tracing tasks)
+#### With tags(--tags) and tasks(--start-at)
+```
+$ ansible-playbook -i hosts site.yml --check --tags "common" --start-at="Rails new"
+```
+
+#### With debug(-vvv) (Tracing tasks)
 ```
 $ ansible-playbook -i hosts site.yml --check -vvv
 ```
