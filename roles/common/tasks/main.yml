@@ -24,6 +24,10 @@
   dnf:
     name: fish
 
+# For error "Failed to set locale, defaulting to C"
+- name: export LC_ALL=C
+  shell: "export LC_ALL=C"
+
 # Document: https://docs.ansible.com/ansible/latest/modules/expect_module.html
 - name: Install pexpect for prompts
   become: yes
