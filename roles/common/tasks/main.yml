@@ -10,8 +10,8 @@
     src: "../files/.bashrc"
     dest: "{{ bashrc_path }}"
 
-- name: Source .bashrc
-  shell: ". {{ bashrc_path }}"
+- name: Reload .bashrc
+  shell: "source {{ bashrc_path }}"
 
 - name: Install fish shell repo
   become: yes
@@ -31,4 +31,4 @@
 # Document: https://docs.ansible.com/ansible/latest/modules/expect_module.html
 - name: Install pexpect for prompts
   become: yes
-  shell: "pip3 install pexpect"
+  command: "pip3 install pexpect"

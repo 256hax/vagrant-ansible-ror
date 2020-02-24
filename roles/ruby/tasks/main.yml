@@ -28,20 +28,21 @@
 # (2) Source .bashrc
 
 - name: Check installed ruby version
-  shell: "rbenv versions"
+  command: "rbenv versions"
   register: "installed_ruby_version"
   ignore_errors: yes
 
 - name: Install Ruby {{ ruby_version }}
-  shell: "rbenv install {{ ruby_version }}"
-  when: installed_ruby_version.stdout.find( "{{ ruby_version }}" ) == -1
+  command: "rbenv install {{ ruby_version }}"
+  when: installed_ruby_version.stdout.find(ruby_version) == -1
+# Conditional statements (= when) should not include jinja2 templating delimiters such as {{ }} or {% %}.
 
 - name: Set Ruby version {{ ruby_version }}
-  shell: "rbenv global {{ ruby_version }}"
-  when: installed_ruby_version.stdout.find( "{{ ruby_version }}" ) == -1
+  command: "rbenv global {{ ruby_version }}"
+  when: installed_ruby_version.stdout.find(ruby_version) == -1
 
 - name: Rehash rbenv
-  shell: "rbenv rehash {{ ruby_version }}"
+  command: "rbenv rehash {{ ruby_version }}"
 
 - name: Install bundler
   gem:

@@ -20,7 +20,7 @@
       - nodejs
 
 - name: Set bundle installation path
-  shell: "bundle config set path 'vendor/bundle'"
+  command: "bundle config set path 'vendor/bundle'"
 
 #--- Rails with SQLite ---#
 - name: Create sample Rails directory
@@ -50,13 +50,13 @@
     chdir: "{{ sample_rails_w_sqlite_path }}"
 
 - name: Rails scaffold
-  shell: "bundle exec rails g scaffold user name:string age:integer"
+  command: "bundle exec rails g scaffold user name:string age:integer"
   args:
     chdir: "{{ sample_rails_w_sqlite_path }}"
   # ignore_errors: yes
 
 - name: Rails DB migrate
-  shell: "bundle exec rails db:migrate"
+  command: "bundle exec rails db:migrate"
   args:
     chdir: "{{ sample_rails_w_sqlite_path }}"
   # ignore_errors: yes

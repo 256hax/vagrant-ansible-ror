@@ -8,7 +8,7 @@
 
 - name: Disable the built-in PostgreSQL module
   become: yes
-  shell: "dnf -qy module disable postgresql"
+  command: "dnf -qy module disable postgresql"
 
 - name: Install the client packages
   become: yes
@@ -22,7 +22,7 @@
 
 - name: Optionally initialize the database and enable automatic start
   become: yes
-  shell: "{{ item }}"
+  command: "{{ item }}"
   loop:
     - /usr/pgsql-{{ postgresql_version }}/bin/postgresql-{{ postgresql_version }}-setup initdb
     - systemctl enable postgresql-{{ postgresql_version }}
@@ -41,7 +41,7 @@
   become: yes
   user:
     name: "postgres"
-    password: "{{ postgresql_password }}"
+    password: "{{ postgresql_password | password_hash('sha256') }}"
 
 - name: Create PostgreSQL User({{ postgresql_username }})
   # It need "become: yes" for "become: postgres".
