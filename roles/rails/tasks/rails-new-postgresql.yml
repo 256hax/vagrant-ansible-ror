@@ -1,0 +1,59 @@
+---
+#--- Init ---#
+- name: --- Init --- Sample Rails with PostgreSQL directory exist?
+  stat:
+    path: "{{ sample_rails_postgresql_path }}"
+  register: is_sample_rails_postgresql
+
+- name: Delete sample directory if exist
+  file:
+    path: "{{ sample_rails_postgresql_path }}"
+    state: absent
+  when: is_sample_rails_postgresql.stat.exists
+
+#--- Rails new ---#
+- name: --- Setup --- Create Sample Rails with PostgreSQL directory
+  file:
+    path: "{{ sample_rails_postgresql_path }}"
+    state: directory
+
+- name: Copy Gemfile
+  copy:
+    src: "../files/Gemfile"
+    dest: "{{ sample_rails_postgresql_path }}"
+
+- name: Install RubyGems
+  bundler:
+      state: present
+  args:
+    chdir: "{{ sample_rails_postgresql_path }}"
+
+- name: Rails new
+  expect:
+    command: "bundle exec rails new . -d postgresql"
+    responses:
+      (.*)Overwrite (.*)Gemfile(.*): "Y"
+    # timeout 1200 sec = 20 min
+    timeout: 1200
+  args:
+    chdir: "{{ sample_rails_postgresql_path }}"
+
+- name: Rails scaffold
+  command: "bundle exec rails g scaffold user name:string age:integer"
+  args:
+    chdir: "{{ sample_rails_postgresql_path }}"
+
+- name: Copy database.yml
+  copy:
+    src: "../files/database.yml"
+    dest: "{{ sample_rails_postgresql_path }}config/"
+
+- name: Rails DB create
+  command: "bundle exec rails db:create"
+  args:
+    chdir: "{{ sample_rails_postgresql_path }}"
+
+- name: Rails DB migrate
+  command: "bundle exec rails db:migrate"
+  args:
+    chdir: "{{ sample_rails_postgresql_path }}"

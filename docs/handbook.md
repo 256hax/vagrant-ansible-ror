@@ -91,3 +91,53 @@ The authenticity of host '192.168.33.10 (192.168.33.10)' can't be established.
 ECDSA key fingerprint is SHA256:IpYETf/cvdT1t7RXpRsPWxc9uqYyGOjawYnMRWHO4/g.
 Are you sure you want to continue connecting (yes/no)? yes
 ```
+
+## PostgreSQL
+### Test Connection
+1. Connection to Vagarnt Server
+```
+$ psql -h 192.168.33.10 -U postgres
+```
+
+2. Show Databases
+```
+postgres=# \l
+                                               List of databases
+                Name                 |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges
+-------------------------------------+----------+----------+-------------+-------------+-----------------------
+ postgres                            | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+ sample_rails_postgresql_development | vagrant  | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+ sample_rails_postgresql_test        | vagrant  | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+ template0                           | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                                     |          |          |             |             | postgres=CTc/postgres
+ template1                           | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+                                     |          |          |             |             | postgres=CTc/postgres
+(5 rows)
+```
+
+3. Connection to Database
+```
+postgres=# \c sample_rails_postgresql_development
+```
+
+4. Show Tables
+```
+sample_rails_postgresql_development=# \d
+                 List of relations
+ Schema |         Name         |   Type   |  Owner
+--------+----------------------+----------+---------
+ public | ar_internal_metadata | table    | vagrant
+ public | schema_migrations    | table    | vagrant
+ public | users                | table    | vagrant
+ public | users_id_seq         | sequence | vagrant
+(4 rows)
+```
+
+5. Show Record
+```
+sample_rails_postgresql_development=# select * from users;
+ id |   name   | age |         created_at         |         updated_at
+----+----------+-----+----------------------------+----------------------------
+  1 | pg tarou |  30 | 2020-02-24 13:52:39.927298 | 2020-02-24 13:52:39.927298
+(1 row)
+```

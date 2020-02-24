@@ -1,18 +1,18 @@
 ---
 #--- Init ---#
-- name: [Init] Sample directory exist?
+- name: --- Init --- Sample Rails with SQLite directory exist?
   stat:
     path: "{{ sample_rails_sqlite_path }}"
   register: is_sample_rails_sqlite
 
-- name: [Init] Delete sample directory if exist
+- name: Delete sample directory if exist
   file:
     path: "{{ sample_rails_sqlite_path }}"
     state: absent
   when: is_sample_rails_sqlite.stat.exists
 
 #--- Rails new ---#
-- name: Create sample Rails directory
+- name: --- Setup --- Create Sample Rails with SQLite directory
   file:
     path: "{{ sample_rails_sqlite_path }}"
     state: directory

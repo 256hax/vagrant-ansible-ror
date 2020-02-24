@@ -36,12 +36,17 @@
   dnf:
     name: python3-psycopg2
 
+- name: Install postgresql-devel
+  become: yes
+  dnf:
+    name: postgresql-devel
+
 #--- Setting ---#
-- name: Activate postgres user (add password)
+- name: Activate User postgres in CentOS (add password)
   become: yes
   user:
     name: "postgres"
-    password: "{{ postgresql_password | password_hash('sha256') }}"
+    password: "{{ 'postgres' | password_hash('sha256') }}"
 
 - name: Create PostgreSQL User({{ postgresql_username }})
   # It need "become: yes" for "become: postgres".
@@ -50,4 +55,17 @@
   postgresql_user:
     name: "{{ postgresql_username }}"
     password: "{{ postgresql_password }}"
+    role_attr_flags: SUPERUSER,CREATEDB,REPLICATION
     login_user: postgres
+
+- name: Copy postgresql.conf
+  become: yes
+  copy:
+    src: "../files/postgresql.conf"
+    dest: "/var/lib/pgsql/12/data/"
+
+- name: Copy pg_hba.conf
+  become: yes
+  copy:
+    src: "../files/pg_hba.conf"
+    dest: "/var/lib/pgsql/12/data/"
