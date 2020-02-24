@@ -4,6 +4,7 @@ Vagrant x Ansible for Ruby on Rails
 
 
 ## Environment
+- Vagrant Server IP: 192.168.33.10
 
 
 ## Setup
