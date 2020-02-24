@@ -1,0 +1,50 @@
+---
+#--- Init ---#
+- name: [Init] Sample directory exist?
+  stat:
+    path: "{{ sample_rails_sqlite_path }}"
+  register: is_sample_rails_sqlite
+
+- name: [Init] Delete sample directory if exist
+  file:
+    path: "{{ sample_rails_sqlite_path }}"
+    state: absent
+  when: is_sample_rails_sqlite.stat.exists
+
+#--- Rails new ---#
+- name: Create sample Rails directory
+  file:
+    path: "{{ sample_rails_sqlite_path }}"
+    state: directory
+
+- name: Copy Gemfile
+  copy:
+    src: "../files/Gemfile"
+    dest: "{{ sample_rails_sqlite_path }}"
+
+- name: Install RubyGems
+  bundler:
+      state: present
+  args:
+    chdir: "{{ sample_rails_sqlite_path }}"
+
+- name: Rails new
+  expect:
+    command: "bundle exec rails new ."
+    responses:
+      (.*)Overwrite (.*)Gemfile(.*): "Y"
+      # Command prompt question: Overwrite /home/vagrant/sample-rails-sqlite/Gemfile? (enter "h" for help) [Ynaqdhm]
+    # timeout 1200 sec = 20 min
+    timeout: 1200
+  args:
+    chdir: "{{ sample_rails_sqlite_path }}"
+
+- name: Rails scaffold
+  command: "bundle exec rails g scaffold user name:string age:integer"
+  args:
+    chdir: "{{ sample_rails_sqlite_path }}"
+
+- name: Rails DB migrate
+  command: "bundle exec rails db:migrate"
+  args:
+    chdir: "{{ sample_rails_sqlite_path }}"
