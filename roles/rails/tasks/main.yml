@@ -22,7 +22,7 @@
 - name: Set bundle installation path
   command: "bundle config set path 'vendor/bundle'"
 
-- name: --- Include Rails new SQLite tasks ---
+- name: Include Rails new SQLite tasks
   include_tasks:
     file: rails-new-sqlite.yml
 

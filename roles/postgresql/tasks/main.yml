@@ -1,4 +1,24 @@
 ---
+#--- Init ---#
+- name: Stop service postgresql, if running
+  become: yes
+  command: "systemctl stop postgresql-{{ postgresql_version }}"
+  # For "Failed to stop postgresql-12.service: Unit postgresql-12.service not loaded." error.
+  ignore_errors: yes
+
+- name: PostgreSQL data directory exist?
+  become: yes
+  stat:
+    path: "{{ postgresql_data_path }}"
+  register: is_postgresql_data
+
+- name: Delete PostgreSQL data directory if exist
+  become: yes
+  file:
+    path: "{{ postgresql_data_path }}"
+    state: absent
+  when: is_postgresql_data.stat.exists
+
 #--- Installation PostgreSQL ---#
 # Installation Steps: https://www.postgresql.org/download/linux/redhat/
 - name: Install PostgreSQL repo

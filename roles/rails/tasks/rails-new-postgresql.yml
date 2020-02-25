@@ -1,6 +1,6 @@
 ---
 #--- Init ---#
-- name: --- Init --- Sample Rails with PostgreSQL directory exist?
+- name: Sample Rails with PostgreSQL directory exist?
   stat:
     path: "{{ sample_rails_postgresql_path }}"
   register: is_sample_rails_postgresql
@@ -12,7 +12,7 @@
   when: is_sample_rails_postgresql.stat.exists
 
 #--- Rails new ---#
-- name: --- Setup --- Create Sample Rails with PostgreSQL directory
+- name: Create Sample Rails with PostgreSQL directory
   file:
     path: "{{ sample_rails_postgresql_path }}"
     state: directory
