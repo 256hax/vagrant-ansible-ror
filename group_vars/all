@@ -1,3 +1,4 @@
 ---
-vagrant_home:    "/home/vagrant/"
-bashrc_path:          "{{ vagrant_home }}.bashrc"
+vagrant_home: "/home/vagrant"
+src_path:     "{{ vagrant_home }}/src"
+bashrc_path:  "{{ vagrant_home }}/.bashrc"

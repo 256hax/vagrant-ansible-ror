@@ -1,3 +1,3 @@
 ---
 fish_repo: "https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_8/shells:fish:release:3.repo"
-fish_dest: "/etc/yum.repos.d/"
+fish_dest: "/etc/yum.repos.d"

@@ -46,7 +46,12 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
+  config.vm.synced_folder "./src", "/home/vagrant/src", create: "true", type: "rsync"
+
+  # Guest Addtions auto update
+  config.vbguest.auto_update = false
+  # ISO download
+  config.vbguest.no_remote = true
 
   # begin disable audio
   config.vm.provider "virtualbox" do |vb|
@@ -67,7 +72,7 @@ Vagrant.configure("2") do |config|
     vb.memory = "2048"
     vb.name = "centos_ror"
   end
-  #
+  
   # View the documentation for the provider you are using for more
   # information on available options.
 

@@ -46,7 +46,7 @@
 - name: Copy database.yml
   copy:
     src: "../files/database.yml"
-    dest: "{{ sample_rails_postgresql_path }}config/"
+    dest: "{{ sample_rails_postgresql_path }}/config"
 
 - name: Rails DB create
   command: "bundle exec rails db:create"
