@@ -5,7 +5,8 @@
 .vagrant
 
 # Source
-src
+src/*
+!src/host-guest-src-sync-here
 
 # Mac
 .DS_Store
