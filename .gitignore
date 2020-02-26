@@ -4,5 +4,8 @@
 # Vagrant
 .vagrant
 
+# Source
+src
+
 # Mac
 .DS_Store
