@@ -1,11 +1,60 @@
 ---
 #--- Init ---#
-- name: Sample Rails with PostgreSQL directory exist?
+- name: Is Sample Rails with PostgreSQL directory exist?
   stat:
     path: "{{ sample_rails_postgresql_path }}"
   register: is_sample_rails_postgresql
 
-- name: Delete sample directory if exist
+  #--- Drop Table if exist ---#
+- name: Delete migration directory if exist
+  file:
+    path: "{{ sample_rails_postgresql_migration_path }}"
+    state: absent
+  when: is_sample_rails_postgresql.stat.exists
+  ignore_errors: yes
+
+- name: Create migration directory
+  file:
+    path: "{{ sample_rails_postgresql_migration_path }}"
+    state: directory
+  when: is_sample_rails_postgresql.stat.exists
+  ignore_errors: yes
+
+- name: Kill spring process and generate migration file
+  command: "{{ item }}"
+  loop:
+    # It need pkill spring sometimes.
+    - pkill -f spring
+    - bundle exec rails g migration drop_users
+  args:
+    chdir: "{{ sample_rails_postgresql_path }}"
+  when: is_sample_rails_postgresql.stat.exists
+  ignore_errors: yes
+
+- name: Find migration file
+  find:
+    paths: "{{ sample_rails_postgresql_migration_path }}"
+    patterns: '.*drop_users.*'
+    use_regex: yes
+  register: migration_file
+  ignore_errors: yes
+
+- name: Insert drop_table
+  # same as => command: sed -ie "3i drop_table :users" {{ migration_file.files[0].path }}
+  lineinfile:
+    path: "{{ migration_file.files[0].path }}"
+    insertafter: '.*def change'
+    line: '    drop_table :users'
+
+- name: Migration DB
+  command: "bundle exec rails db:migrate"
+  args:
+    chdir: "{{ sample_rails_postgresql_path }}"
+  when: is_sample_rails_postgresql.stat.exists
+  ignore_errors: yes
+  #--- /Drop Table if exist ---#
+
+- name: Delete sample directory all if exist
   file:
     path: "{{ sample_rails_postgresql_path }}"
     state: absent
@@ -57,3 +106,4 @@
   command: "bundle exec rails db:migrate"
   args:
     chdir: "{{ sample_rails_postgresql_path }}"
+  ignore_errors: yes

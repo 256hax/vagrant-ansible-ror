@@ -1,11 +1,11 @@
 ---
 #--- Init ---#
-- name: Sample Rails with SQLite directory exist?
+- name: Is Sample Rails with SQLite directory exist?
   stat:
     path: "{{ sample_rails_sqlite_path }}"
   register: is_sample_rails_sqlite
 
-- name: Delete sample directory if exist
+- name: Delete sample directory all if exist
   file:
     path: "{{ sample_rails_sqlite_path }}"
     state: absent
@@ -48,3 +48,4 @@
   command: "bundle exec rails db:migrate"
   args:
     chdir: "{{ sample_rails_sqlite_path }}"
+  ignore_errors: yes

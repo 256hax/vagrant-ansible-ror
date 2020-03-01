@@ -17,35 +17,28 @@ $ vagrant reload
 ```
 
 ## Ansible Playbook Command
-### Check syntax(--syntax-check)
-```
-$ ansible-playbook -i hosts --syntax-check site.yml
-```
+### Common Options
+- `--syntax-check`: check syntax
+- `--check`: dry run
+- `--tags "<tags name>"`: only run plays and tasks tagged
+- `--start-at-task "<task name>"`: start the playbook at the task name
+- `-vvv`: debug on console
+- `--step`: one-step-at-a-time: confirm each task before running
 
-### Dry run
-#### Standard(--check)
-```
-$ ansible-playbook -i hosts site.yml --check
-```
-
-#### With tags(--tags)
-```
-$ ansible-playbook -i hosts site.yml --check --tags "common"
-```
-
-#### With tags(--tags) and tasks(--start-at)
-```
-$ ansible-playbook -i hosts site.yml --check --tags "common" --start-at="Rails new"
-```
-
-#### With debug(-vvv) (Tracing tasks)
-```
-$ ansible-playbook -i hosts site.yml --check -vvv
-```
-
-### Run
+### Example
+Run Playbook
 ```
 $ ansible-playbook -i hosts site.yml
+```
+
+Dry run with tags and starting at task name
+```
+$ ansible-playbook -i hosts site.yml --check --tags "rails" --start-at-task="Rails new"
+```
+
+Run Playbook one step at a time with debug
+```
+$ ansible-playbook -i hosts site.yml --tags "rails" --step -vvv
 ```
 
 ## Documents
@@ -94,7 +87,15 @@ Are you sure you want to continue connecting (yes/no)? yes
 
 ## PostgreSQL
 ### Test Connection
-1. Connection to Vagarnt Server
+1. Connection to PostgreSQL Server
+
+```
+$ vagrant ssh
+$ bundle exec rails db
+```
+
+or
+
 ```
 $ psql -h 192.168.33.10 -U postgres
 ```

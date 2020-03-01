@@ -1,0 +1,10 @@
+---
+- name: Minitest for Sample Rails with SQLite
+  command: "bundle exec rails test"
+  args:
+    chdir: "{{ sample_rails_sqlite_path }}"
+
+- name: Minitest for Sample Rails with PostgreSQL
+  command: "bundle exec rails test"
+  args:
+    chdir: "{{ sample_rails_postgresql_path }}"
