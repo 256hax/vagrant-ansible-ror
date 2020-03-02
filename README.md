@@ -5,13 +5,17 @@ Quick and easy(like out-of-the-box) to start Ruby on Rails development environme
 
 ## Environments
 - Host
-  - macOS
+  - ansible-playbook 2.9.3
+  - Vagrant 2.2.6
+  - macOS Catalina version 10.15.3
 - Guest
   - Frontend: Not specified (Ruby on Rails default)
   - Application: Ruby on Rails
   - Middleware: PostgreSQL, Puma
-  - OS: CentOS 8
+  - OS: CentOS 8, Fish shell
   - IP: 192.168.33.10
+- Note
+  - [Ruby version](https://github.com/256hax/vagrant-ansible-ror/blob/master/roles/ruby/vars/main.yml)
 
 ## Setup
 Install VirtualBox and Vagrant.
@@ -68,4 +72,4 @@ $ vagrant rsync-auto
 ```
 
 ## Handbook
-See docs on our GitHub.
+[My Handbook](https://github.com/256hax/vagrant-ansible-ror/blob/master/docs/handbook.md)

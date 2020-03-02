@@ -37,6 +37,7 @@
     patterns: '.*drop_users.*'
     use_regex: yes
   register: migration_file
+  when: is_sample_rails_postgresql.stat.exists
   ignore_errors: yes
 
 - name: Insert drop_table
@@ -45,6 +46,8 @@
     path: "{{ migration_file.files[0].path }}"
     insertafter: '.*def change'
     line: '    drop_table :users'
+  when: is_sample_rails_postgresql.stat.exists
+  ignore_errors: yes
 
 - name: Migration DB
   command: "bundle exec rails db:migrate"
@@ -59,6 +62,7 @@
     path: "{{ sample_rails_postgresql_path }}"
     state: absent
   when: is_sample_rails_postgresql.stat.exists
+  ignore_errors: yes
 
 #--- Rails new ---#
 - name: Create Sample Rails with PostgreSQL directory

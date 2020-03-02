@@ -91,7 +91,7 @@ Are you sure you want to continue connecting (yes/no)? yes
 
 ```
 $ vagrant ssh
-$ bundle exec rails db
+vagrant$ bundle exec rails db
 ```
 
 or
