@@ -6,12 +6,12 @@
 $ vagrant up
 ```
 
-### Delete vagrant machine
+### Delete Vagrant machine
 ```
 $ vagrant destroy
 ```
 
-## vagrant設定の反映
+## Reload Vagrant (halt and up)
 ```
 $ vagrant reload
 ```
