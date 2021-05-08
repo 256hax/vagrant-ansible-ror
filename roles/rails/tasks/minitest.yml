@@ -1,4 +1,40 @@
 ---
+#--- START: Fix for "cannot load such file -- rexml/document (LoadError)" error ---#
+- name: Add rexml Gem to Sample Rails SQLite
+  shell: |
+    echo "gem 'rexml'" >> Gemfile
+  args:
+    chdir: "{{ sample_rails_sqlite_path }}"
+
+- name: Bundle Install to Sample Rails SQLite
+  command: "bundle install"
+  args:
+    chdir: "{{ sample_rails_sqlite_path }}"
+
+- name: Add rexml Gem to Sample Rails PostgreSQL
+  shell: |
+    echo "gem 'rexml'" >> Gemfile
+  args:
+    chdir: "{{ sample_rails_postgresql_path }}"
+
+- name: Bundle Install to Sample Rails PostgreSQL
+  command: "bundle install"
+  args:
+    chdir: "{{ sample_rails_postgresql_path }}"
+#--- END: Fix for "cannot load such file -- rexml/document (LoadError)" error ---#
+
+#--- START: Fix for "ActionView::Template::Error: Webpacker configuration file not found XXX. Please run rails webpacker:install Error: No such file or directory @ rb_sysopen - XXX" error ---#
+- name: Install Webpacker to Sample Rails SQLite
+  command: "bundle exec rails webpacker:install"
+  args:
+    chdir: "{{ sample_rails_sqlite_path }}"
+
+- name: Install Webpacker to Sample Rails PostgreSQL
+  command: "bundle exec rails webpacker:install"
+  args:
+    chdir: "{{ sample_rails_postgresql_path }}"
+#--- END: Fix for "ActionView::Template::Error: Webpacker configuration file not found XXX. Please run rails webpacker:install Error: No such file or directory @ rb_sysopen - XXX" error ---#
+
 - name: Minitest for Sample Rails with SQLite
   command: "bundle exec rails test"
   args:

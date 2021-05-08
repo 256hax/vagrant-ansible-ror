@@ -1,6 +1,7 @@
 ---
-postgresql_repo: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-6-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
-postgresql_version: "12"
+postgresql_repo: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
+postgresql_version: "13.2"
+postgresql_major_version: "13"
 postgresql_data_path: "/var/lib/pgsql/{{ postgresql_version }}/data"
 postgresql_username: "vagrant"
 postgresql_password: "vagrant"

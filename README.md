@@ -1,21 +1,27 @@
-Vagrant x Ansible for Ruby on Rails.
+Vagrant x Ansible Playbook for Ruby on Rails.
 
 ## Purpose
 Quick and easy(like out-of-the-box) to start Ruby on Rails development environments.
 
 ## Environments
 - Host
-  - ansible-playbook 2.9.3
-  - Vagrant 2.2.6
-  - macOS Catalina version 10.15.3
+  - ansible-playbook 2.10.5
+  - Vagrant 2.2.16
+  - macOS BigSur 11.2.3
 - Guest
-  - Frontend: Not specified (Ruby on Rails default)
-  - Application: Ruby on Rails
-  - Middleware: PostgreSQL, Puma
-  - OS: CentOS 8, Fish shell
-  - IP: 192.168.33.10
-- Note
-  - [Ruby version](https://github.com/256hax/vagrant-ansible-ror/blob/master/roles/ruby/vars/main.yml)
+  - Frontend
+    - Not specified (Ruby on Rails default)
+  - Application
+    - Ruby on Rails 6.1.3.2
+    - ruby 3.0.1
+  - Middleware
+    - PostgreSQL 13.2
+    - Puma
+  - OS
+    - CentOS Stream release 8
+    - Fish shell
+  - IP
+    - 192.168.33.10
 
 ## Setup
 Install VirtualBox and Vagrant.
@@ -63,7 +69,7 @@ $ ls -la ./src
 
 3. Edit some files then sync from Host to Guest
 ```
-$ vagran rsync
+$ vagrant rsync
 ```
 
 4. Optionally sync auto from Host to Guest

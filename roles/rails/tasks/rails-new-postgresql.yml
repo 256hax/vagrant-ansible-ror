@@ -5,7 +5,7 @@
     path: "{{ sample_rails_postgresql_path }}"
   register: is_sample_rails_postgresql
 
-  #--- Drop Table if exist ---#
+#--- Drop Table if exist ---#
 - name: Delete migration directory if exist
   file:
     path: "{{ sample_rails_postgresql_migration_path }}"
@@ -88,6 +88,19 @@
       (.*)Overwrite (.*)Gemfile(.*): "Y"
     # timeout 1200 sec = 20 min
     timeout: 1200
+  args:
+    chdir: "{{ sample_rails_postgresql_path }}"
+
+#--- Install Gems ---#
+- name: Add pgsql bin PATH
+  # Fix for "checking for pg_config... no" error.
+  shell: |
+    echo -e "\n" >> ~/.bashrc
+    echo "export PATH=/usr/pgsql-{{ postgresql_major_version }}/bin:\$PATH" >> ~/.bashrc
+    source ~/.bashrc
+
+- name: Bundle Install
+  command: "bundle install"
   args:
     chdir: "{{ sample_rails_postgresql_path }}"
 
